@@ -1,6 +1,6 @@
 import express from 'express'
 import { productValidation } from '~/validations/productValidation'
-import { productController } from '~/controllers/ProductController'
+import { productController } from '~/controllers/productController'
 import { multerUploadMiddleware } from '~/middlewares/multerUploadMiddleware'
 import { productFormDataMiddleware } from '~/middlewares/productFormDataMiddleware'
 import { authMiddleware } from '~/middlewares/authMiddleware'

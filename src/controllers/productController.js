@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { productService } from '~/services/ProductService'
+import { productService } from '~/services/productService'
 
 const createNew = async (req, res, next) => {
   try {
