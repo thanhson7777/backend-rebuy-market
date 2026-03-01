@@ -1,9 +1,8 @@
 import express from 'express'
+import { userRoute } from './UserRoute'
 
 const Router = express.Router()
 
-Router.get('/status', (req, res) => {
-  res.end('<h1>Xin Chao</h1>')
-})
+Router.use('/users', userRoute)
 
 export const APIS_V1 = Router
