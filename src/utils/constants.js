@@ -3,26 +3,11 @@ import { env } from '~/config/enviroment'
 export const DEFAULT_PAGE = 1
 export const DEFAULT_ITEM_PER_PAGE = 10
 
-export const UNIT_PRODUCT = {
-  KG: 'KG',
-  VIEN: 'VIEN',
-  CUON: 'CUON',
-  TAM: 'TAM',
-  THUNG: 'THUNG',
-  BAO: 'BAO',
-  CHAI: 'CHAI',
-  HOP: 'HOP'
-}
-
 export const USER_ROLE = {
   ADMIN: 'admin',
-  CUSTOMER: 'customer'
+  CLIENT: 'client'
 }
 
-export const STATUS_PRODUCT = {
-  ACTIVE: 'active',
-  INACTIVE: 'inactive'
-}
 
 export const PAYMENT_METHOD = {
   COD: 'COD',

@@ -21,7 +21,7 @@ const START_SERVER = () => {
 
   app.use(express.json())
 
-  app.use('/v1', APIS_V1)
+  app.use('/', APIS_V1)
   app.use(errorHandlingMiddleware)
 
   app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
