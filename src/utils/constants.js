@@ -30,6 +30,11 @@ export const STATUS_ORDER = {
   CANCELLED: 'CANCELLED'
 }
 
+export const STATUS_PRODUCT = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+}
+
 export const WHITELIST_DOMAINS = [
   'http://localhost:5173'
 ]
