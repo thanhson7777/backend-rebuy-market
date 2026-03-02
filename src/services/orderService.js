@@ -86,7 +86,6 @@ const createNew = async ({ userId, reqBody }) => {
     totalHeight += item.height
   })
 
-  // Gọi lên GHN check lại xem số tiền vận chuyển Frontend truyền lên có bị hack chỉnh sửa không
   const actualShippingFee = await ghnProvider.calculateShippingFee({
     to_district_id: reqBody.shippingAddress.district_id,
     to_ward_code: reqBody.shippingAddress.ward_code,
@@ -97,8 +96,6 @@ const createNew = async ({ userId, reqBody }) => {
     insurance_value: totalProductPrice
   })
 
-  // Ở đây chúng ta cho phép sai số một xíu (nếu có cache hoặc tính toán tròn số)
-  // nhưng nếu chênh nhau quá đáng thì báo lỗi
   if (actualShippingFee !== reqBody.shippingFee) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Phí vận chuyển không khớp so với dữ liệu tính toán từ Giao Hàng Nhanh. Vui lòng tải lại trang!')
   }
@@ -256,7 +253,6 @@ const cancelOrder = async (orderId, userId) => {
     status: 'CANCELLED'
   })
 
-  // Re-activate products if order is cancelled
   if (order.items && order.items.length > 0) {
     for (const item of order.items) {
       await productModel.update(item.productId, { status: 'active' })

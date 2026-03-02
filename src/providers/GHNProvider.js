@@ -3,9 +3,6 @@ import { env } from '~/config/enviroment'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 
-/**
- * Service tích hợp Giao Hàng Nhanh (GHN) API
- */
 class GHNProvider {
   constructor() {
     this.apiHelper = axios.create({
@@ -47,7 +44,6 @@ class GHNProvider {
         insurance_value: payload.insurance_value || 0,
         coupon: null
       }
-      // console.log('--- DỮ LIỆU ĐẨY LÊN API GHN ---: ', data)
       const response = await this.apiHelper.post('/shipping-order/fee', data)
       if (response.data && response.data.code === 200) {
         return response.data.data.total
@@ -62,9 +58,6 @@ class GHNProvider {
     }
   }
 
-  /**
-   * Lấy danh sách Dịch Vụ giao hàng để get service_id tương ứng giữa 2 quận.
-   */
   async getAvailableServices(to_district_id) {
     try {
       const response = await this.apiHelper.post('/shipping-order/available-services', {
