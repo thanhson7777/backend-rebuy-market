@@ -15,6 +15,25 @@ const createNew = async (req, res, next) => {
     }),
     sku: Joi.string().trim().optional().allow(null, ''),
     price: Joi.number().min(0).required(),
+
+    // Bổ sung validate cho thông tin giao hàng GHN
+    weight: Joi.number().min(1).required().messages({
+      'any.required': 'Trọng lượng là bắt buộc',
+      'number.min': 'Trọng lượng phải lớn hơn 0'
+    }),
+    length: Joi.number().min(1).required().messages({
+      'any.required': 'Chiều dài là bắt buộc',
+      'number.min': 'Chiều dài phải lớn hơn 0'
+    }),
+    width: Joi.number().min(1).required().messages({
+      'any.required': 'Chiều rộng là bắt buộc',
+      'number.min': 'Chiều rộng phải lớn hơn 0'
+    }),
+    height: Joi.number().min(1).required().messages({
+      'any.required': 'Chiều cao là bắt buộc',
+      'number.min': 'Chiều cao phải lớn hơn 0'
+    }),
+
     defects: Joi.string().trim().optional().allow(null, ''),
     description: Joi.string().trim().optional().allow(null, ''),
     image: Joi.alternatives().try(Joi.array().items(Joi.string().trim()), Joi.string().trim()).optional().allow(null, '')
@@ -43,6 +62,10 @@ const update = async (req, res, next) => {
     }),
     sku: Joi.string().trim().optional().allow(null, ''),
     price: Joi.number().min(0),
+    weight: Joi.number().min(1).optional(),
+    length: Joi.number().min(1).optional(),
+    width: Joi.number().min(1).optional(),
+    height: Joi.number().min(1).optional(),
     defects: Joi.string().trim().optional().allow(null, ''),
     description: Joi.string().trim().optional().allow(null, ''),
     image: Joi.alternatives().try(Joi.array().items(Joi.string().trim()), Joi.string().trim()).optional().allow(null, '')

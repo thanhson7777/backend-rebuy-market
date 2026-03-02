@@ -32,5 +32,11 @@ export const env = {
 
   MOMO_PARTNER_CODE: process.env.MOMO_PARTNER_CODE,
   MOMO_ACCESS_KEY: process.env.MOMO_ACCESS_KEY,
-  MOMO_SECRET_KEY: process.env.MOMO_SECRET_KEY
+  MOMO_SECRET_KEY: process.env.MOMO_SECRET_KEY,
+
+  GHN_TOKEN_API: process.env.GHN_TOKEN_API,
+  GHN_SHOP_ID: process.env.GHN_SHOP_ID,
+  GHN_SHOP_DISTRICT_ID: process.env.GHN_SHOP_DISTRICT_ID,
+  GHN_SHOP_WARD_CODE: process.env.GHN_SHOP_WARD_CODE,
+  GHN_API_URL: process.env.GHN_API_URL
 }
