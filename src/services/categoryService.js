@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import { categoryModel } from '~/models/categoryModel'
-import { productModel } from '~/models/ProductModel'
+import { productModel } from '~/models/productModel'
 import { CloudinaryProvider } from '~/providers/CloudinaryProvider'
 import ApiError from '~/utils/ApiError'
 import { slugify } from '~/utils/formatter'
