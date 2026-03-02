@@ -1,7 +1,7 @@
 import { GET_DB } from '~/config/mongodb'
 import Joi from 'joi'
 import { ObjectId } from 'mongodb'
-import { productModel } from './ProductModel'
+import { productModel } from './productModel'
 
 const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
 const CATEGORY_COLLECTION_NAME = 'categories'

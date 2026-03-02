@@ -1,7 +1,7 @@
 import { slugify } from '~/utils/formatter'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
-import { productModel } from '~/models/ProductModel'
+import { productModel } from '~/models/productModel'
 import { DEFAULT_PAGE, DEFAULT_ITEM_PER_PAGE } from '~/utils/constants'
 import { CloudinaryProvider } from '~/providers/CloudinaryProvider'
 import { categoryModel } from '~/models/categoryModel'

@@ -15,7 +15,6 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   sku: Joi.string().trim().default(null),
   price: Joi.number().min(0).required(),
 
-  // Bổ sung thông tin giao hàng GHN
   weight: Joi.number().min(1).required(), // Đơn vị: gram
   length: Joi.number().min(1).required(), // Đơn vị: cm
   width: Joi.number().min(1).required(), // Đơn vị: cm
