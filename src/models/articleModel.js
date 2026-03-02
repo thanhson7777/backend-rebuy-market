@@ -3,8 +3,8 @@ import Joi from 'joi'
 import { ObjectId } from 'mongodb'
 
 const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
-const CATEGORY_COLLECTION_NAME = 'articles'
-const CATEGORY_COLLECTION_SCHEMA = Joi.object({
+const ARTiCLE_COLLECTION_NAME = 'articles'
+const ARTiCLE_COLLECTION_SCHEMA = Joi.object({
   name: Joi.string().required().min(3).max(100).trim().strict(),
   slug: Joi.string().required().trim().strict(),
   thumbnail_url: Joi.string().trim().optional().allow(null, ''),
@@ -18,7 +18,7 @@ const CATEGORY_COLLECTION_SCHEMA = Joi.object({
 })
 
 const validateBeforeCreate = async (data) => {
-  return await CATEGORY_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false, allowUnknown: true })
+  return await ARTiCLE_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false, allowUnknown: true })
 }
 
 const createNew = async (data) => {
@@ -28,19 +28,19 @@ const createNew = async (data) => {
       ...validData
     }
 
-    return await GET_DB().collection(CATEGORY_COLLECTION_NAME).insertOne(newCategory)
+    return await GET_DB().collection(ARTiCLE_COLLECTION_NAME).insertOne(newCategory)
   } catch (error) { throw new Error(error) }
 }
 
 const findOneById = async (id) => {
   try {
-    return await GET_DB().collection(CATEGORY_COLLECTION_NAME).findOne({ _id: new ObjectId(String(id)) })
+    return await GET_DB().collection(ARTiCLE_COLLECTION_NAME).findOne({ _id: new ObjectId(String(id)) })
   } catch (error) { throw new Error(error) }
 }
 
 const getArticles = async () => {
   try {
-    const result = await GET_DB().collection(CATEGORY_COLLECTION_NAME).aggregate([
+    const result = await GET_DB().collection(ARTiCLE_COLLECTION_NAME).aggregate([
       { $match: { _destroy: false } },
       { $sort: { createdAt: -1 } }
     ]).toArray()
@@ -59,7 +59,7 @@ const update = async (articleId, updateData) => {
 
     updateData.updatedAt = Date.now()
 
-    const result = await GET_DB().collection(CATEGORY_COLLECTION_NAME).findOneAndUpdate(
+    const result = await GET_DB().collection(ARTiCLE_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(String(articleId)) },
       { $set: updateData },
       { returnDocument: 'after' }
@@ -70,7 +70,7 @@ const update = async (articleId, updateData) => {
 
 const deleteByOneId = async (articleId) => {
   try {
-    const result = await GET_DB().collection(CATEGORY_COLLECTION_NAME).updateOne(
+    const result = await GET_DB().collection(ARTiCLE_COLLECTION_NAME).updateOne(
       { _id: new ObjectId(String(articleId)) },
       {
         $set: {
@@ -85,8 +85,8 @@ const deleteByOneId = async (articleId) => {
 
 
 export const articleModel = {
-  CATEGORY_COLLECTION_NAME,
-  CATEGORY_COLLECTION_SCHEMA,
+  ARTiCLE_COLLECTION_NAME,
+  ARTiCLE_COLLECTION_SCHEMA,
   createNew,
   findOneById,
   getArticles,

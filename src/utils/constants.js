@@ -35,6 +35,13 @@ export const STATUS_PRODUCT = {
   INACTIVE: 'INACTIVE'
 }
 
+export const STATUS_CONTACT = {
+  NEW: 'NEW',
+  PENDING: 'PENDING',
+  RESOLVED: 'RESOLVED',
+  SPAM: 'SPAM'
+}
+
 export const WHITELIST_DOMAINS = [
   'http://localhost:5173'
 ]
