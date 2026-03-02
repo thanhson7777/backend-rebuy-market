@@ -14,6 +14,13 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   slug: Joi.string().required().min(3).trim().strict(),
   sku: Joi.string().trim().default(null),
   price: Joi.number().min(0).required(),
+
+  // Bổ sung thông tin giao hàng GHN
+  weight: Joi.number().min(1).required(), // Đơn vị: gram
+  length: Joi.number().min(1).required(), // Đơn vị: cm
+  width: Joi.number().min(1).required(), // Đơn vị: cm
+  height: Joi.number().min(1).required(), // Đơn vị: cm
+
   defects: Joi.string().trim().default(null),
   description: Joi.string().trim().default(null),
   image: Joi.array().items(Joi.string().trim()).default([]),
