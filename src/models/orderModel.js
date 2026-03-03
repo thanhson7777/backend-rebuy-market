@@ -14,9 +14,9 @@ const ORDER_COLLECTION_SCHEMA = Joi.object({
     phone: Joi.string().required().pattern(PHONE_RULE).message('Số điện thoại không hợp lệ!'),
     province: Joi.string().required().trim(),
     district: Joi.string().required().trim(),
-    ward: Joi.string().required().trim(),
-    district_id: Joi.number().required(),
-    ward_code: Joi.string().required(),
+    // ward: Joi.string().required().trim(),
+    // district_id: Joi.number().required(),
+    // ward_code: Joi.string().required(),
     note: Joi.string().allow('').max(500).optional()
   }).required(),
 

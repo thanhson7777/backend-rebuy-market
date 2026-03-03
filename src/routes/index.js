@@ -10,6 +10,7 @@ import { bannerRoute } from './bannerRoute'
 import { articleRoute } from './articleRoute'
 import { contactRoute } from './contactRoute'
 import { dashboardRoute } from './dashboardRoute'
+import { ghnRoute } from './ghnRoute'
 
 const Router = express.Router()
 
@@ -24,5 +25,6 @@ Router.use('/banners', bannerRoute)
 Router.use('/articles', articleRoute)
 Router.use('/contacts', contactRoute)
 Router.use('/dashboard', dashboardRoute)
+Router.use('/ghn', ghnRoute)
 
 export const APIS_V1 = Router

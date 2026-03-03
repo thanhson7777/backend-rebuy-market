@@ -31,8 +31,9 @@ export const STATUS_ORDER = {
 }
 
 export const STATUS_PRODUCT = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE'
+  SOLD: 'sold',
+  AVAILABLE: 'available',
+  HIDDEN: 'hidden'
 }
 
 export const STATUS_CONTACT = {

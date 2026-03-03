@@ -13,6 +13,12 @@ Router.route('/')
     contactController.createNew
   )
 
+Router.route('/public')
+  .post(
+    contactValidation.createNew,
+    contactController.createNew
+  )
+
 Router.route('/:id')
   .put(
     authMiddleware.isAuthorized,

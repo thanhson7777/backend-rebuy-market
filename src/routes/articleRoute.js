@@ -18,6 +18,7 @@ Router.route('/')
   )
 
 Router.route('/:id')
+  .get(articleController.getDetails)
   .put(
     authMiddleware.isAuthorized,
     authMiddleware.isAuthorizedAdmin,

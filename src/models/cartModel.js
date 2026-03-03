@@ -154,7 +154,8 @@ const getCartDetail = async (userId) => {
                   name: '$productInfo.name',
                   defects: '$productInfo.defects',
                   image: '$productInfo.image',
-                  price: '$productInfo.referencePrice',
+                  price: '$productInfo.price',
+                  status: '$productInfo.status',
                   slug: '$productInfo.slug'
                 },
                 '$$REMOVE'

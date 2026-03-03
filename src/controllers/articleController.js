@@ -51,9 +51,23 @@ const deleteItem = async (req, res, next) => {
   } catch (error) { next(error) }
 }
 
+const getDetails = async (req, res, next) => {
+  try {
+    const articleId = req.params.id
+    const article = await articleService.getDetails(articleId)
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: 'Lấy chi tiết bài viết thành công!',
+      data: article
+    })
+  } catch (error) { next(error) }
+}
+
 export const articleController = {
   createNew,
   getArticles,
   update,
-  deleteItem
+  deleteItem,
+  getDetails
 }

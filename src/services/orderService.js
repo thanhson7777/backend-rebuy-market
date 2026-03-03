@@ -1,6 +1,6 @@
 import { orderModel } from '~/models/orderModel'
 import { cartModel } from '~/models/cartModel'
-import { productModel } from '~/models/ProductModel'
+import { productModel } from '~/models/productModel'
 import { couponModel } from '~/models/couponModel'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
@@ -9,7 +9,7 @@ import { vnpayInstance } from '~/config/vnpayConfig'
 import { ProductCode, VnpLocale, dateFormat } from 'vnpay'
 import crypto from 'crypto'
 import { DEFAULT_PAGE, DEFAULT_ITEM_PER_PAGE } from '~/utils/constants'
-import { ghnProvider } from '~/providers/GHNProvider'
+import { shippingHelper } from '~/utils/shipping'
 
 const createNew = async ({ userId, reqBody }) => {
   const cart = await cartModel.findOneByUserId(userId)
@@ -74,33 +74,14 @@ const createNew = async ({ userId, reqBody }) => {
     }
   }
 
-  let totalWeight = 0
-  let totalLength = 0
-  let totalWidth = 0
-  let totalHeight = 0
+  const actualShippingFee = shippingHelper.calculateShippingFee(
+    reqBody.shippingAddress.province,
+    reqBody.shippingAddress.district,
+    totalProductPrice
+  )
 
-  finalProductList.forEach(item => {
-    totalWeight += item.weight
-    totalLength += item.length
-    totalWidth += item.width
-    totalHeight += item.height
-  })
-
-  // Gọi lên GHN check lại xem số tiền vận chuyển Frontend truyền lên có bị hack chỉnh sửa không
-  const actualShippingFee = await ghnProvider.calculateShippingFee({
-    to_district_id: reqBody.shippingAddress.district_id,
-    to_ward_code: reqBody.shippingAddress.ward_code,
-    weight: totalWeight,
-    length: totalLength,
-    width: totalWidth,
-    height: totalHeight,
-    insurance_value: totalProductPrice
-  })
-
-  // Ở đây chúng ta cho phép sai số một xíu (nếu có cache hoặc tính toán tròn số)
-  // nhưng nếu chênh nhau quá đáng thì báo lỗi
   if (actualShippingFee !== reqBody.shippingFee) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, 'Phí vận chuyển không khớp so với dữ liệu tính toán từ Giao Hàng Nhanh. Vui lòng tải lại trang!')
+    throw new ApiError(StatusCodes.BAD_REQUEST, 'Phi van chuyen khong khop. Vui long tai lai trang!')
   }
 
   const finalPrice = totalProductPrice + actualShippingFee - discountAmount
@@ -271,38 +252,22 @@ const getMyOrders = async (userId) => {
   return orders
 }
 
-const previewShippingFee = async (userId, districtId, wardCode) => {
+const previewShippingFee = async (userId, province, district) => {
   const cart = await cartModel.findOneByUserId(userId)
   if (!cart || cart.items.length === 0) {
     throw new ApiError(StatusCodes.BAD_REQUEST, 'Giỏ hàng trống!')
   }
 
-  let totalWeight = 0
-  let totalLength = 0
-  let totalWidth = 0
-  let totalHeight = 0
   let totalProductPrice = 0
 
   for (const item of cart.items) {
     const product = await productModel.findOneById(item.productId)
     if (product) {
-      totalWeight += product.weight || 1000
-      totalLength += product.length || 15
-      totalWidth += product.width || 15
-      totalHeight += product.height || 15
       totalProductPrice += product.price
     }
   }
 
-  const fee = await ghnProvider.calculateShippingFee({
-    to_district_id: districtId,
-    to_ward_code: wardCode,
-    weight: totalWeight,
-    length: totalLength,
-    width: totalWidth,
-    height: totalHeight,
-    insurance_value: totalProductPrice
-  })
+  const fee = shippingHelper.calculateShippingFee(province, district, totalProductPrice)
 
   return { shippingFee: fee }
 }

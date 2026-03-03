@@ -2,7 +2,7 @@ import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
 import { PAYMENT_METHOD } from '~/utils/constants'
-import { PHONE_RULE, OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator' // Gom import cho gọn
+import { PHONE_RULE, OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validator'
 
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -12,9 +12,9 @@ const createNew = async (req, res, next) => {
       address: Joi.string().required().min(5),
       province: Joi.string().required().trim(),
       district: Joi.string().required().trim(),
-      ward: Joi.string().required().trim(),
-      district_id: Joi.number().required(),
-      ward_code: Joi.string().required(),
+      // ward: Joi.string().required().trim(),
+      // district_id: Joi.number().required(),
+      // ward_code: Joi.string().required(),
       note: Joi.string().allow('').optional()
     }).required(),
 
@@ -51,8 +51,8 @@ const checkOrderId = async (req, res, next) => {
 
 const previewShippingFee = async (req, res, next) => {
   const condition = Joi.object({
-    district_id: Joi.number().required(),
-    ward_code: Joi.string().required()
+    province: Joi.string().required().trim(),
+    district: Joi.string().required().trim()
   })
   try {
     const validatedData = await condition.validateAsync(req.body, { abortEarly: false, stripUnknown: true })

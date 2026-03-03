@@ -24,7 +24,7 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   description: Joi.string().trim().default(null),
   image: Joi.array().items(Joi.string().trim()).default([]),
 
-  status: Joi.string().valid(...Object.values(STATUS_PRODUCT)).default(STATUS_PRODUCT.ACTIVE),
+  status: Joi.string().valid(...Object.values(STATUS_PRODUCT)).default(STATUS_PRODUCT.AVAILABLE),
 
   createdAt: Joi.date().timestamp('javascript').default(Date.now),
   updatedAt: Joi.date().timestamp('javascript').default(null),
@@ -60,7 +60,7 @@ const getProducts = async (page, itemsPerPage) => {
         {
           $match: {
             _destroy: false,
-            status: STATUS_PRODUCT.ACTIVE
+            status: STATUS_PRODUCT.AVAILABLE
           }
         },
         {

@@ -65,9 +65,16 @@ const deleteItem = async (articleId) => {
   } catch (error) { throw error }
 }
 
+const getDetails = async (articleId) => {
+  const article = await articleModel.findOneById(articleId)
+  if (!article) throw new ApiError(StatusCodes.NOT_FOUND, 'không tìm thấy bài viết')
+  return article
+}
+
 export const articleService = {
   createNew,
   getArticles,
   update,
-  deleteItem
+  deleteItem,
+  getDetails
 }

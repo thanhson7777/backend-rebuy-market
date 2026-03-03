@@ -85,9 +85,9 @@ const getMyOrders = async (req, res, next) => {
 const previewShippingFee = async (req, res, next) => {
   try {
     const userId = req.jwtDecoded._id
-    const { district_id, ward_code } = req.body
+    const { province, district } = req.body
 
-    const result = await orderService.previewShippingFee(userId, district_id, ward_code)
+    const result = await orderService.previewShippingFee(userId, province, district)
 
     res.status(StatusCodes.OK).json({
       success: true,
