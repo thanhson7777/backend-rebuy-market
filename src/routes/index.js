@@ -9,6 +9,7 @@ import { orderRoute } from './orderRoute'
 import { bannerRoute } from './bannerRoute'
 import { articleRoute } from './articleRoute'
 import { contactRoute } from './contactRoute'
+import { dashboardRoute } from './dashboardRoute'
 
 const Router = express.Router()
 
@@ -22,5 +23,6 @@ Router.use('/orders', orderRoute)
 Router.use('/banners', bannerRoute)
 Router.use('/articles', articleRoute)
 Router.use('/contacts', contactRoute)
+Router.use('/dashboard', dashboardRoute)
 
 export const APIS_V1 = Router
