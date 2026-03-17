@@ -12,7 +12,7 @@ const USER_COLLECTION_SCHEMA = Joi.object({
   password: Joi.string().required(),
   displayName: Joi.string().required().min(3).max(50).trim().strict(),
   fullName: Joi.string().required().min(3).max(100).trim().strict(),
-  phone: Joi.string().required().pattern(PHONE_RULE).message(PHONE_RULE_MESSAGE),
+  phone: Joi.string().pattern(PHONE_RULE).message(PHONE_RULE_MESSAGE),
   avatar: Joi.string().default(null),
   role: Joi.string().valid(...Object.values(USER_ROLE)).default(USER_ROLE.CLIENT),
   isActive: Joi.boolean().default(false),

@@ -32,7 +32,7 @@ const createNew = async (reqBody) => {
     const createdUser = await userModel.createNew(newUser)
     const getNewUser = await userModel.findOneById(createdUser.insertedId)
 
-    const verificationLink = `${WEBSITE_DOMAIN}/account/verification?email=${getNewUser.email}&token=${getNewUser.verifyToken}`
+    const verificationLink = `${WEBSITE_DOMAIN}/verify?email=${getNewUser.email}&token=${getNewUser.verifyToken}`
     const customSubject = 'REBUY MARKET: Xác thực tài khoản của bạn'
 
     const userName = createdUser.fullName
@@ -79,7 +79,11 @@ const createNew = async (reqBody) => {
       </div>
       `
 
-    await BrevoProvider.sendEmail(getNewUser.email, customSubject, htmlContent)
+    try {
+      await BrevoProvider.sendEmail(getNewUser.email, customSubject, htmlContent)
+    } catch (emailError) {
+      console.error('Gửi email xác thực thất bại:', emailError)
+    }
     return pickUser(getNewUser)
   } catch (error) { throw error }
 }

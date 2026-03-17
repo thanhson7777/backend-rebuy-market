@@ -17,7 +17,7 @@ const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
     email: Joi.string().required().pattern(EMAIL_RULE).message(EMAIL_RULE_MESSAGE),
     password: Joi.string().required().pattern(PASSWORD_RULE).message(PASSWORD_RULE_MESSAGE),
-    phone: Joi.string().required().pattern(PHONE_RULE).message(PHONE_RULE_MESSAGE),
+    phone: Joi.string().pattern(PHONE_RULE).message(PHONE_RULE_MESSAGE),
     fullName: Joi.string().required().min(3).max(100).trim().strict()
   })
 
