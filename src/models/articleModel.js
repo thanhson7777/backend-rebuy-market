@@ -38,11 +38,12 @@ const findOneById = async (id) => {
   } catch (error) { throw new Error(error) }
 }
 
-const getArticles = async () => {
+const getArticles = async (limit = 4) => {
   try {
     const result = await GET_DB().collection(ARTiCLE_COLLECTION_NAME).aggregate([
       { $match: { _destroy: false } },
-      { $sort: { createdAt: -1 } }
+      { $sort: { createdAt: -1 } },
+      { $limit: limit }
     ]).toArray()
 
     return result

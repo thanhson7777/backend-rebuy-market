@@ -24,6 +24,7 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
   description: Joi.string().trim().default(null),
   image: Joi.array().items(Joi.string().trim()).default([]),
 
+  condition: Joi.string().valid('new99', 'new95', 'used').default('used'),
   status: Joi.string().valid(...Object.values(STATUS_PRODUCT)).default(STATUS_PRODUCT.AVAILABLE),
 
   createdAt: Joi.date().timestamp('javascript').default(Date.now),
@@ -53,13 +54,16 @@ const findOneById = async (id) => {
   } catch (error) { throw new Error(error) }
 }
 
-const getProducts = async (page, itemsPerPage, keyword = null) => {
+const getProducts = async (page, itemsPerPage, filters = {}) => {
   try {
+    const { keyword, category, minPrice, maxPrice, condition, sortBy, orderBy } = filters
+
     const matchStage = {
       _destroy: false,
       status: STATUS_PRODUCT.AVAILABLE
     }
 
+    // Lọc theo từ khóa
     if (keyword && keyword.trim()) {
       const searchRegex = new RegExp(keyword.trim(), 'i')
       matchStage.$or = [
@@ -69,13 +73,38 @@ const getProducts = async (page, itemsPerPage, keyword = null) => {
       ]
     }
 
+    // Lọc theo danh mục
+    if (category && category !== 'all') {
+      matchStage.categoryId = new ObjectId(String(category))
+    }
+
+    // Lọc theo khoảng giá
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      matchStage.price = {}
+      if (minPrice !== undefined) matchStage.price.$gte = minPrice
+      if (maxPrice !== undefined) matchStage.price.$lte = maxPrice
+    }
+
+    // Lọc theo tình trạng
+    if (condition && condition.length > 0) {
+      matchStage.condition = { $in: condition }
+    }
+
+    // Xử lý sắp xếp
+    const sortStage = {}
+    if (sortBy) {
+      sortStage[sortBy] = orderBy === 'asc' ? 1 : -1
+    } else {
+      sortStage.createdAt = -1 // Mặc định: mới nhất
+    }
+
     const query = await GET_DB().collection(PRODUCT_COLLECTION_NAME).aggregate(
       [
         { $match: matchStage },
         {
           $facet: {
             'queryProducts': [
-              { $sort: { createdAt: -1 } },
+              { $sort: sortStage },
               { $skip: pagingSkipValue(page, itemsPerPage) },
               { $limit: itemsPerPage }
             ],

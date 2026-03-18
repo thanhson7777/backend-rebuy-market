@@ -14,9 +14,17 @@ const createNew = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
   try {
-    const { page, itemsPerPage, keyword } = req.query
+    const { page, limit, keyword, category, minPrice, maxPrice, condition, sortBy, orderBy } = req.query
 
-    const result = await productService.getProducts(page, itemsPerPage, keyword)
+    const filters = { keyword, category }
+    
+    if (minPrice) filters.minPrice = parseInt(minPrice, 10)
+    if (maxPrice) filters.maxPrice = parseInt(maxPrice, 10)
+    if (condition) filters.condition = condition.split(',')
+    if (sortBy) filters.sortBy = sortBy
+    if (orderBy) filters.orderBy = orderBy
+
+    const result = await productService.getProducts(page, limit, filters)
     res.status(StatusCodes.OK).json({
       success: true,
       message: 'Lấy danh sách sản phẩm thành công!',

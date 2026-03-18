@@ -1,7 +1,7 @@
 import { env } from '~/config/enviroment'
 
 export const DEFAULT_PAGE = 1
-export const DEFAULT_ITEM_PER_PAGE = 10
+export const DEFAULT_ITEM_PER_PAGE = 12
 
 export const USER_ROLE = {
   ADMIN: 'admin',

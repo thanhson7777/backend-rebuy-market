@@ -14,7 +14,8 @@ const createNew = async (req, res, next) => {
 
 const getArticles = async (req, res, next) => {
   try {
-    const result = await articleService.getArticles()
+    const limit = parseInt(req.query.limit, 10) || 4
+    const result = await articleService.getArticles(limit)
     res.status(StatusCodes.OK).json({
       status: 'success',
       message: 'Lấy danh sách bài viết thành công',

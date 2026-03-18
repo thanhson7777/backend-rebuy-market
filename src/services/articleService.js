@@ -25,9 +25,9 @@ const createNew = async (reqBody, reqFile) => {
   } catch (error) { throw error }
 }
 
-const getArticles = async () => {
+const getArticles = async (limit = 4) => {
   try {
-    const results = await articleModel.getArticles()
+    const results = await articleModel.getArticles(limit)
     return results
   } catch (error) { throw error }
 }

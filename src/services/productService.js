@@ -39,7 +39,7 @@ const createNew = async (reqBody, reqFiles) => {
   } catch (error) { throw error }
 }
 
-const getProducts = async (page, itemsPerPage, keyword = null) => {
+const getProducts = async (page, itemsPerPage, filters = {}) => {
   try {
     if (!page) page = DEFAULT_PAGE
     if (!itemsPerPage) itemsPerPage = DEFAULT_ITEM_PER_PAGE
@@ -47,7 +47,7 @@ const getProducts = async (page, itemsPerPage, keyword = null) => {
     const results = await productModel.getProducts(
       parseInt(page, 10),
       parseInt(itemsPerPage, 10),
-      keyword
+      filters
     )
 
     return results
