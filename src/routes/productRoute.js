@@ -10,6 +10,9 @@ const Router = express.Router()
 Router.route('/')
   .get(productController.getProducts)
 
+Router.route('/search')
+  .get(productController.searchProducts)
+
 Router.route('/admin')
   .get(
     authMiddleware.isAuthorized,

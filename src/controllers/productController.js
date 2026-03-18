@@ -14,12 +14,24 @@ const createNew = async (req, res, next) => {
 
 const getProducts = async (req, res, next) => {
   try {
-    const { page, itemsPerPage } = req.query
+    const { page, itemsPerPage, keyword } = req.query
 
-    const result = await productService.getProducts(page, itemsPerPage)
+    const result = await productService.getProducts(page, itemsPerPage, keyword)
     res.status(StatusCodes.OK).json({
       success: true,
       message: 'Lấy danh sách sản phẩm thành công!',
+      data: result
+    })
+  } catch (error) { next(error) }
+}
+
+const searchProducts = async (req, res, next) => {
+  try {
+    const { keyword } = req.query
+    const result = await productService.searchProducts(keyword)
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: 'Tìm kiếm sản phẩm thành công!',
       data: result
     })
   } catch (error) { next(error) }
@@ -101,6 +113,7 @@ const forceDeleteItem = async (req, res, next) => {
 export const productController = {
   createNew,
   getProducts,
+  searchProducts,
   getDetails,
   update,
   deleteItem,

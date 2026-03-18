@@ -39,17 +39,25 @@ const createNew = async (reqBody, reqFiles) => {
   } catch (error) { throw error }
 }
 
-const getProducts = async (page, itemsPerPage) => {
+const getProducts = async (page, itemsPerPage, keyword = null) => {
   try {
     if (!page) page = DEFAULT_PAGE
     if (!itemsPerPage) itemsPerPage = DEFAULT_ITEM_PER_PAGE
 
     const results = await productModel.getProducts(
       parseInt(page, 10),
-      parseInt(itemsPerPage, 10)
+      parseInt(itemsPerPage, 10),
+      keyword
     )
 
     return results
+  } catch (error) { throw new Error(error) }
+}
+
+const searchProducts = async (keyword) => {
+  try {
+    const products = await productModel.searchProducts(keyword)
+    return products
   } catch (error) { throw new Error(error) }
 }
 
@@ -124,6 +132,7 @@ const forceDeleteItem = async (productId) => {
 export const productService = {
   createNew,
   getProducts,
+  searchProducts,
   getDetails,
   update,
   deleteItem,

@@ -53,16 +53,25 @@ const findOneById = async (id) => {
   } catch (error) { throw new Error(error) }
 }
 
-const getProducts = async (page, itemsPerPage) => {
+const getProducts = async (page, itemsPerPage, keyword = null) => {
   try {
+    const matchStage = {
+      _destroy: false,
+      status: STATUS_PRODUCT.AVAILABLE
+    }
+
+    if (keyword && keyword.trim()) {
+      const searchRegex = new RegExp(keyword.trim(), 'i')
+      matchStage.$or = [
+        { name: { $regex: searchRegex } },
+        { sku: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } }
+      ]
+    }
+
     const query = await GET_DB().collection(PRODUCT_COLLECTION_NAME).aggregate(
       [
-        {
-          $match: {
-            _destroy: false,
-            status: STATUS_PRODUCT.AVAILABLE
-          }
-        },
+        { $match: matchStage },
         {
           $facet: {
             'queryProducts': [
@@ -84,6 +93,35 @@ const getProducts = async (page, itemsPerPage) => {
       products: res.queryProducts || [],
       totalProducts: res.queryTotalProducts[0]?.countedAllProducts || 0
     }
+  } catch (error) { throw new Error(error) }
+}
+
+const searchProducts = async (keyword) => {
+  try {
+    if (!keyword || keyword.trim() === '') {
+      return []
+    }
+
+    const searchRegex = new RegExp(keyword.trim(), 'i')
+
+    const products = await GET_DB().collection(PRODUCT_COLLECTION_NAME).aggregate([
+      {
+        $match: {
+          _destroy: false,
+          status: STATUS_PRODUCT.AVAILABLE,
+          $or: [
+            { name: { $regex: searchRegex } },
+            { sku: { $regex: searchRegex } },
+            { description: { $regex: searchRegex } }
+          ]
+        }
+      },
+      {
+        $limit: 10
+      }
+    ]).toArray()
+
+    return products
   } catch (error) { throw new Error(error) }
 }
 
@@ -183,6 +221,7 @@ export const productModel = {
   createNew,
   findOneById,
   getProducts,
+  searchProducts,
   update,
   deleteByOneId,
   deleteManyByCategoryId,
